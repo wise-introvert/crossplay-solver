@@ -1,0 +1,365 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+:root {
+  --bg: #0f1420;
+  --panel: #1a2130;
+  --text: #e9edf5;
+  --muted: #94a1b7;
+  --border: #2a3550;
+  --accent: #0ea5e9;
+  --tile: #f5deb3;
+  --tile-text: #2b2416;
+  --blank: #e05252;
+  --tw: #d84343;
+  --dw: #e08a3c;
+  --tl: #3f7fd6;
+  --dl: #5aa9a2;
+  --cell: #232c40;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font:
+    15px/1.5 -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  padding: 0 14px 48px;
+}
+.site-header {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 26px 0 16px;
+  text-align: center;
+}
+h1 {
+  font-size: 1.65rem;
+}
+.tagline {
+  color: var(--muted);
+  margin-top: 6px;
+}
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.solver-wrap {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.board-side {
+  flex: 0 0 auto;
+  position: relative;
+}
+#kbd-proxy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  background: transparent;
+  pointer-events: none;
+  z-index: -1;
+}
+#board {
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  gap: 2px;
+  background: #0b101b;
+  padding: 4px;
+  border-radius: 10px;
+  width: min(92vw, 560px);
+}
+.sq {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: clamp(9px, 2.1vw, 17px);
+  background: var(--cell);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+  color: #8fa0bf;
+}
+.sq.b-tw {
+  background: var(--tw);
+  color: #ffe3e3;
+}
+.sq.b-dw {
+  background: var(--dw);
+  color: #ffedd9;
+}
+.sq.b-tl {
+  background: var(--tl);
+  color: #dceafe;
+}
+.sq.b-dl {
+  background: var(--dl);
+  color: #dcf5f2;
+}
+.sq.b-start {
+  background: #7b5ea8;
+  color: #eee;
+}
+.sq .bl {
+  font-size: 0.55em;
+  letter-spacing: 0.03em;
+}
+.sq.filled {
+  background: var(--tile);
+  color: var(--tile-text);
+}
+.sq.filled.blank-tile {
+  color: var(--blank);
+}
+.sq.preview {
+  background: #ffd97a;
+  color: #2b2416;
+  outline: 2px solid #ffb300;
+}
+.sq.selected {
+  outline: 2px solid var(--accent);
+  z-index: 2;
+}
+.sq.selected::after {
+  content: attr(data-arrow);
+  position: absolute;
+  right: 2px;
+  bottom: 0;
+  font-size: 0.55em;
+  color: var(--accent);
+}
+.board-hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 8px;
+  max-width: 560px;
+}
+kbd {
+  background: #2a3550;
+  border-radius: 4px;
+  padding: 0 5px;
+  font-size: 0.85em;
+}
+.control-side {
+  flex: 1 1 300px;
+  min-width: 280px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.rack-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+#rack {
+  width: 100%;
+  margin-top: 6px;
+  background: #232c40;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 1.2rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+#rack:focus {
+  outline: 2px solid var(--accent);
+}
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #232c40;
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #04212f;
+  font-weight: 700;
+}
+button:hover {
+  filter: brightness(1.1);
+}
+.status {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 10px;
+  min-height: 20px;
+}
+.results {
+  margin-top: 10px;
+  list-style: none;
+  max-height: 430px;
+  overflow-y: auto;
+}
+.results li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.results li:hover,
+.results li.active {
+  background: #232c40;
+}
+.results .word {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.results .word .b {
+  color: var(--blank);
+}
+.results .meta {
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+.results .pts {
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 44px;
+  text-align: right;
+}
+.content {
+  margin-top: 36px;
+  color: #c7cfdf;
+  max-width: 780px;
+}
+.content h2 {
+  font-size: 1.12rem;
+  margin: 22px 0 8px;
+  color: var(--text);
+}
+.content p,
+.content li {
+  margin: 8px 0;
+}
+.content ol,
+.content ul {
+  margin: 8px 0 8px 1.2em;
+}
+.content a,
+.guide-links a,
+footer a {
+  color: var(--accent);
+}
+.guide-links {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+}
+.guide-list {
+  list-style: none;
+  margin-left: 0;
+}
+.guide-list li {
+  margin: 10px 0;
+}
+.faq dt {
+  font-weight: 600;
+  margin-top: 12px;
+}
+.faq dd {
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+.wrap {
+  max-width: 780px;
+  margin: 28px auto 0;
+}
+.wrap h1 {
+  margin-bottom: 8px;
+}
+.wrap th {
+  background: var(--panel);
+  color: var(--text);
+}
+.wrap .lede {
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.wrap h2 {
+  font-size: 1.12rem;
+  margin: 22px 0 8px;
+  color: var(--text);
+}
+.wrap p,
+.wrap li,
+.wrap dd {
+  color: #c7cfdf;
+  margin: 8px 0;
+}
+.wrap ol,
+.wrap ul {
+  margin: 8px 0 8px 1.2em;
+}
+.wrap a {
+  color: var(--accent);
+}
+.wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 0.9rem;
+}
+.wrap th,
+.wrap td {
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  text-align: left;
+}
+footer {
+  max-width: 1080px;
+  margin: 40px auto 0;
+  font-size: 0.78rem;
+  color: #5f6b84;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+@media (max-width: 720px) {
+  .solver-wrap {
+    flex-direction: column;
+  }
+  .board-side {
+    width: 100%;
+  }
+  #board {
+    width: 100%;
+  }
+}

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crossplay Board Solver — NYT Best Moves & Word Finder</title>
+    <meta
+      name="description"
+      content="Free NYT Crossplay board solver and word finder. Enter your 15×15 board and rack to rank every legal play by exact score — bonuses, blanks, and the +40 included."
+    />
+    <link rel="canonical" href="https://solvecrossplay.com/" />
+    <meta property="og:url" content="https://solvecrossplay.com/" />
+    <meta
+      property="og:title"
+      content="Crossplay Board Solver — NYT Best Moves & Word Finder"
+    />
+    <meta
+      property="og:description"
+      content="Enter your NYT Crossplay board and rack — get every legal move ranked by exact score."
+    />
+    <meta property="og:type" content="website" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='6' y='6' width='88' height='88' rx='14' fill='%230ea5e9'/><text x='50' y='68' font-size='52' text-anchor='middle' font-family='Georgia' font-weight='bold' fill='white'>C</text></svg>"
+    />
+    <link rel="stylesheet" href="style.css?v=4" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Crossplay Board Solver",
+        "applicationCategory": "UtilityApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "description": "Board-aware NYT Crossplay solver and word finder: finds every legal play and ranks it by exact score, including bonus squares, cross words, blanks and the 40-point full-rack bonus."
+      }
+    </script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7995348366777658"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <h1>Crossplay Board Solver</h1>
+      <p class="tagline">
+        Rebuild your NYT Crossplay board, type your rack, and get every legal
+        play ranked by exact score — not just word ideas.
+      </p>
+      <nav class="guide-links" aria-label="Crossplay guides">
+        <a href="/screenshot/">Screenshot import</a>
+        <a href="/how-to-play/">How to play</a>
+        <a href="/board-layout/">Board layout</a>
+        <a href="/tile-values/">Tile values</a>
+        <a href="/two-letter-words/">Two-letter words</a>
+        <a href="/three-letter-words/">Three-letter words</a>
+        <a href="/q-words/">Q words</a>
+        <a href="/high-scoring-words/">J, Q, X, Z words</a>
+        <a href="/vowel-heavy-words/">Vowel dumps</a>
+        <a href="/strategy/">Strategy</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="solver-wrap">
+        <div class="board-side">
+          <input
+            id="kbd-proxy"
+            autocapitalize="characters"
+            autocorrect="off"
+            autocomplete="off"
+            spellcheck="false"
+            aria-hidden="true"
+            tabindex="-1"
+            style="
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 1px;
+              height: 1px;
+              opacity: 0;
+              border: 0;
+              padding: 0;
+              margin: 0;
+              font-size: 16px;
+              background: transparent;
+              pointer-events: none;
+              z-index: -1;
+            "
+          />
+          <div id="board" aria-label="Crossplay board editor"></div>
+          <div class="board-hint">
+            Click a square, then type. Click again to switch across/down.
+            <kbd>?</kbd> before a letter = blank tile.
+            <kbd>Backspace</kbd> deletes.
+          </div>
+        </div>
+        <div class="control-side">
+          <label class="rack-label"
+            >Your rack (up to 7, use ? for blanks)
+            <input
+              id="rack"
+              maxlength="7"
+              placeholder="e.g. AEINRT?"
+              autocomplete="off"
+              spellcheck="false"
+              autocapitalize="characters"
+              autocorrect="off"
+            />
+          </label>
+          <div class="btn-row">
+            <button id="solve-btn" class="primary">Solve board</button>
+            <button id="clear-btn">Clear board</button>
+          </div>
+          <div class="btn-row">
+            <button id="shot-btn">📷 Import screenshot</button>
+            <input type="file" id="shot-file" accept="image/*" hidden />
+          </div>
+          <div id="status" class="status">Loading dictionary…</div>
+          <ol id="results" class="results"></ol>
+        </div>
+      </section>
+
+      <section class="content">
+        <h2>How to use the Crossplay solver</h2>
+        <ol>
+          <li>
+            <strong>Enter the board.</strong> Click a square and type the tiles
+            already in play, or skip the typing and
+            <a href="/screenshot/">import a screenshot</a> of your game. Type
+            <kbd>?</kbd> before a letter to mark it as a blank.
+          </li>
+          <li>
+            <strong>Enter your rack.</strong> Up to seven letters; use
+            <kbd>?</kbd> for each blank tile.
+          </li>
+          <li>
+            <strong>Solve.</strong> Every legal move is listed with its exact
+            score. Click a result to preview it on the board, including which
+            bonus squares it uses.
+          </li>
+        </ol>
+        <h2>How this Crossplay solver works</h2>
+        <p>
+          Unlike simple word unscramblers, this is a true
+          <strong>board solver</strong>: it runs a full move-generation
+          algorithm over your actual 15×15 Crossplay board. Every suggestion is
+          a legal placement — it respects existing tiles, forms valid cross
+          words, applies double/triple letter and word squares only to newly
+          placed tiles, scores blanks as zero, and adds the 40-point bonus when
+          a play uses all seven rack tiles. Click any result to preview it on
+          the board.
+        </p>
+        <p>
+          If you searched for a Crossplay cheat or a screenshot solver, this is
+          the same tool: import the board from a phone screenshot or type it by
+          hand, then read the ranked legal plays.
+        </p>
+        <p>
+          The move generator is the same anchor-and-cross-check approach used by
+          tournament Scrabble engines: it finds every anchor square touching the
+          existing tiles, builds left parts and right parts through a trie of
+          the dictionary, and only keeps placements where every perpendicular
+          word is also valid. A mid-game board with 60 tiles typically has
+          20,000 to 40,000 legal plays; the solver enumerates all of them and
+          sorts by score in well under a second, entirely in your browser.
+        </p>
+        <h2>Crossplay tile values and board layout</h2>
+        <p>
+          Crossplay uses its own letter values (not Scrabble's): A E I N O R S T
+          = 1 · D L U = 2 · C H M P = 3 · B F G Y = 4 · W = 5 · K V = 6 · X = 8
+          · J Q Z = 10 · blanks = 0. The bag holds 100 tiles including 3 blanks,
+          and using all 7 tiles in one turn earns a flat +40. The board is not
+          the Scrabble board either: the
+          <a href="/board-layout/">corners are triple-letter squares</a>, the
+          eight triple-word squares sit on the edges three in from each corner,
+          and the centre star doubles the opening word. See the full
+          <a href="/tile-values/">tile values chart</a> and the
+          <a href="/board-layout/">bonus square map</a>.
+        </p>
+        <h2>Word lists for Crossplay</h2>
+        <p>
+          The solver finds the plays; these lists help you find them yourself at
+          the table. Start with the
+          <a href="/two-letter-words/">two-letter words</a> (they unlock
+          parallel plays), then the
+          <a href="/three-letter-words/">three-letter words</a> (they unlock
+          hooks), then the emergency lists: <a href="/q-words/">Q without U</a>,
+          <a href="/high-scoring-words/">short J, X and Z words</a>, and
+          <a href="/vowel-heavy-words/">vowel dumps</a>. New to the game? The
+          <a href="/how-to-play/">rules guide</a> and
+          <a href="/strategy/">strategy tips</a> cover the rest.
+        </p>
+        <h2>FAQ</h2>
+        <dl class="faq">
+          <dt>Is every suggested word playable in NYT Crossplay?</dt>
+          <dd>
+            Placements and scores are exact. The word list is based on a large
+            tournament-style dictionary plus the NWL23 two-letter additions (QI,
+            ZA, OK and others); NYT curates its own list from NWL23, so on rare
+            occasions a suggested word may be rejected — the next result down
+            will be legal.
+          </dd>
+          <dt>Does it handle blank tiles?</dt>
+          <dd>
+            Yes — type <kbd>?</kbd> in your rack for each blank. Blanks are
+            tried as every letter and always score zero, exactly like the game.
+          </dd>
+          <dt>Can I solve a board that already has words on it?</dt>
+          <dd>
+            That's the point: type the existing tiles onto the board editor
+            first. The solver only suggests moves that connect to them legally.
+          </dd>
+          <dt>
+            Does it work with the daily Crossplay game and with live matches?
+          </dt>
+          <dd>
+            Both. The solver doesn't connect to the game — it works from
+            whatever board you give it, so it applies to the daily puzzle,
+            friend matches and real-time matches alike. In a live match you'll
+            want the <a href="/screenshot/">screenshot import</a>; typing 60
+            tiles by hand takes too long.
+          </dd>
+          <dt>Why does the score differ from what Cross Bot shows?</dt>
+          <dd>
+            Usually because a tile was entered on the wrong square, so a bonus
+            square is being counted (or missed). Re-check the board against your
+            screenshot; the <a href="/board-layout/">layout page</a> shows where
+            every bonus square is. If the board is right, the scores match to
+            the point.
+          </dd>
+          <dt>Is using a solver cheating?</dt>
+          <dd>
+            In a match against another person, using it mid-game is against the
+            spirit of the game and we don't recommend it. Its intended use is
+            study: after a game, run your board to see what the best play was
+            and why, the same way chess players review with an engine. Cross Bot
+            in the app does a lighter version of this.
+          </dd>
+          <dt>Does it work offline or on my phone?</dt>
+          <dd>
+            It works on any phone browser. After the first load the dictionary
+            is cached, and the solving itself never contacts a server, so it
+            keeps working on a poor connection.
+          </dd>
+          <dt>Is this free?</dt>
+          <dd>
+            Completely free, no account, and the solver runs entirely in your
+            browser.
+          </dd>
+        </dl>
+      </section>
+    </main>
+
+    <footer>
+      <p style="font-size: 14px">
+        <strong>Guides:</strong> <a href="/screenshot/">Screenshot import</a> ·
+        <a href="/how-to-play/">How to play</a> &middot;
+        <a href="/board-layout/">Board layout</a> &middot;
+        <a href="/tile-values/">Tile values</a> &middot;
+        <a href="/two-letter-words/">Two-letter words</a> &middot;
+        <a href="/three-letter-words/">Three-letter words</a> &middot;
+        <a href="/q-words/">Q words without U</a> &middot;
+        <a href="/high-scoring-words/">J, Q, X, Z words</a> &middot;
+        <a href="/vowel-heavy-words/">Vowel dumps</a> &middot;
+        <a href="/strategy/">Strategy tips</a>
+      </p>
+      <p>
+        Fan-made tool for puzzle fans. Not affiliated with or endorsed by The
+        New York Times. Crossplay is a trademark of its owner.
+      </p>
+      <p style="font-size: 13px">
+        <a href="/about/">About</a> · <a href="/privacy/">Privacy</a> ·
+        <a href="/contact/">Contact</a>
+      </p>
+    </footer>
+
+    <script src="ocr.js?v=3"></script>
+    <script src="app.js?v=5"></script>
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920"
+      integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA=="
+      data-cf-beacon='{"version":"2024.11.0","token":"c85b9c328f6949fcb37607d1159d9e5b","r":1,"spa":2}'
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
